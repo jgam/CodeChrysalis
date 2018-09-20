@@ -22,7 +22,6 @@ function arrayToList(input){
 	return ret;
 }
 
-
 function listToArray(input, array=[]){
 	//nested function!
 	array.push(input['value']);
@@ -33,13 +32,34 @@ function listToArray(input, array=[]){
 		return array;
 	}
 }
-console.log(listToArray(arrayToList([10, 20])));
-
-console.log(arrayToList([10,20]));
-
-console.log(listToArray({value: 10, rest: {value: 20, rest: null}}));
 
 function nestedFunction(input){
-	//comment: improved listToArray()
-	
+	let retList = [];
+	function parsing(input){
+		//append to the list
+		retList.push(input['value']);
+		//write code
+		if(input['rest']!=null){
+			parsing(input['rest']);
+		}
+		return retList;
+	}
+	return parsing(input);
 }
+
+function prepend(value, rest){
+	let ret = new Object();
+	ret.value = value;
+	ret.rest = rest;
+	return ret;
+}
+
+function nth(list, index){
+	let retList = nestedFunction(list);
+	return retList[index];
+}
+
+
+console.log(nestedFunction(arrayToList([10,20])));
+console.log(prepend(10, prepend(20, null)));
+console.log(nth(arrayToList([10,20,30]), 1));
